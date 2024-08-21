@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Get the directory of the script
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # Exit if the target configuration file does not exist
 if [ ! -f /etc/nginx/nginx.conf ]; then
     echo "/etc/nginx/nginx.conf does not exist. Exiting..."
@@ -32,7 +35,7 @@ export GZIP_COMP_LEVEL="5"
 export GZIP_TYPES="text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript"
 
 # Replace variables in the template file and copy to destination
-envsubst < ./template1.nginx.conf | sudo tee /etc/nginx/nginx.conf > /dev/null
+envsubst < "$SCRIPT_DIR/template1.nginx.conf" | sudo tee /etc/nginx/nginx.conf > /dev/null
 
 echo "Backup created and new configuration applied."
 
