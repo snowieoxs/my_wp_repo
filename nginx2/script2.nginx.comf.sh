@@ -12,7 +12,7 @@ fi
 
 # Create a backup of the current configuration with a timestamp
 timestamp=$(date +"%Y%m%d%H%M%S")
-sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak_1_$timestamp
+sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak_2_$timestamp
 
 # Append the backup file path to the list of backups
 echo "/etc/nginx/nginx.conf.bak_$timestamp" >> "$SCRIPT_DIR/listofbaks"
@@ -37,6 +37,19 @@ export CLIENT_MAX_BODY_SIZE="64m"
 export GZIP_PROXIED="any"
 export GZIP_COMP_LEVEL="5"
 export GZIP_TYPES="text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript"
+
+# Define the server block as a variable
+SERVER_BLOCK=$(cat <<'EOF'
+    server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        server_name _;
+        return 444;
+    }
+EOF
+)
+
+
 
 # Replace variables in the template file and copy to destination
 envsubst < "$SCRIPT_DIR/template1.nginx.conf" | sudo tee /etc/nginx/nginx.conf > /dev/null
