@@ -11,8 +11,8 @@ if [ ! -f /etc/nginx/sites-available/default ]; then
 fi
 
 # Create a backup of the current configuration with a timestamp
-timestamp=$(date +"%Y%m%d%H%M%S")
-sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak_$timestamp
+timestamp=$(date +"%Y_%m_%d_%H_%M_%S")
+# sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak_$timestamp
 
 # Append the backup file path to the list of backups
 echo "/etc/nginx/sites-available/default.bak_$timestamp" >> "$SCRIPT_DIR/listofbaks"
