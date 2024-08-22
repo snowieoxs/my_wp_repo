@@ -16,7 +16,7 @@ sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak_$timestamp
 # Define your variables
 ulimit_n=$(ulimit -n)
 num_cores=$(grep -c processor /proc/cpuinfo)
-utilization_factor=0.80
+utilization_factor=0.90
 
 # Calculate worker_connections
 worker_connections=$(echo "$ulimit_n * $num_cores * $utilization_factor" | bc)
