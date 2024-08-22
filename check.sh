@@ -66,3 +66,7 @@ echo "service fail2ban status"
 service fail2ban status
 echo
 echo "***********************************************************************************************************"
+echo "sudo apt update"
+echo "sudo apt upgrade"
+echo "sudo apt dist-upgrade"
+echo "sudo apt autoremove"

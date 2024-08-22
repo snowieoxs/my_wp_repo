@@ -13,6 +13,9 @@ fi
 timestamp=$(date +"%Y%m%d%H%M%S")
 sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak_$timestamp
 
+# Append the backup file path to the list of backups
+echo "/etc/nginx/nginx.conf.bak_$timestamp" >> "$SCRIPT_DIR/listofbaks"
+
 # Define your variables
 ulimit_n=$(ulimit -n)
 num_cores=$(grep -c processor /proc/cpuinfo)

@@ -13,6 +13,9 @@ fi
 timestamp=$(date +"%Y%m%d%H%M%S")
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak_$timestamp
 
+# Append the backup file path to the list of backups
+echo "/etc/nginx/sites-available/default.bak_$timestamp" >> "$SCRIPT_DIR/listofbaks"
+
 # Export variables
 export INCLUDE_FACTCGI_PHP="location ~ \.php$ {include snippets/fastcgi-php.conf; fastcgi_pass unix:/run/php/php8.3-fpm.sock;}"
 

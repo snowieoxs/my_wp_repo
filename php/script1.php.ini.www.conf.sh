@@ -21,6 +21,11 @@ sudo cp /etc/php/8.3/fpm/pool.d/www.conf /etc/php/8.3/fpm/pool.d/www.conf_$times
 
 sudo cp /etc/php/8.3/fpm/php.ini /etc/php/8.3/fpm/php.ini_$timestamp
 
+# Append the backup file path to the list of backups
+echo "/etc/php/8.3/fpm/pool.d/www.conf_$timestamp" >> "$SCRIPT_DIR/listofbaks"
+
+echo "/etc/php/8.3/fpm/php.ini_$timestamp" >> "$SCRIPT_DIR/listofbaks"
+
 # Export variables 
 export PHP_USER="$USER"
 ###
