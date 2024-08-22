@@ -40,12 +40,12 @@ export GZIP_TYPES="text/plain text/css application/json application/javascript t
 
 # Define the server block as a variable
 SERVER_BLOCK=$(cat <<'EOF'
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name _;
-    return 444;
-}
+    server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        server_name _;
+        return 444;
+    }
 EOF
 )
 
@@ -55,13 +55,8 @@ envsubst < "$SCRIPT_DIR/template2.nginx.conf" > "$NGINX2_TEMP_CONF"
 
 # Use awk to replace the placeholder with the actual server block
 awk -v server_block="$SERVER_BLOCK" '
-    /# SERVER_BLOCK_PLACEHOLDER/ { 
-        print server_block; 
-        next 
-    } 
-    { 
-        print 
-    }' "$NGINX2_TEMP_CONF" | sudo tee /etc/nginx/nginx.conf > /dev/null
+/# SERVER_BLOCK_PLACEHOLDER/ {print server_block; next} {print}
+' "$NGINX2_TEMP_CONF" | sudo tee /etc/nginx/nginx.conf > /dev/null
 
 # Clean up temporary file
 rm "$NGINX2_TEMP_CONF"
@@ -78,23 +73,5 @@ else
     echo "***********************************************************************************************************"
     echo "Nginx configuration test failed. Not restarting Nginx."
 fi
-
-
-# EXAMPLE OF AWK WITH INDENTATION HANDLED IN A WAY THAT IS EASIER TO READ
-# # Define the server block as a variable
-# SERVER_BLOCK=$(cat <<'EOF'
-#     server {
-#         listen 80 default_server;
-#         listen [::]:80 default_server;
-#         server_name _;
-#         return 444;
-#     }
-# EOF
-# )
-
-# # Use awk to replace the placeholder with the actual server block
-# awk -v block="$SERVER_BLOCK" '
-# /# SERVER_BLOCK_PLACEHOLDER/ {print block; next} {print}
-# ' "$TEMP_CONF" | sudo tee /etc/nginx/nginx.conf > /dev/null
 
 
