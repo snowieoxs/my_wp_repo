@@ -5,11 +5,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Exit if the target configuration file does not exist
 if [ ! -f /etc/php/8.3/fpm/pool.d/www.conf ]; then
+    echo "***********************************************************************************************************"
     echo "/etc/php/8.3/fpm/pool.d/www.conf does not exist. Exiting..."
     exit 1
 fi
 
 if [ ! -f /etc/php/8.3/fpm/php.ini ]; then
+    echo "***********************************************************************************************************"
     echo "/etc/php/8.3/fpm/php.ini does not exist. Exiting..."
     exit 1
 fi
@@ -47,5 +49,6 @@ sudo php-fpm8.3 -t
 if [ $? -eq 0 ]; then
     sudo service php8.3-fpm restart
 else
+    echo "***********************************************************************************************************"
     echo "php-fpm8.3 configuration test failed. Not restarting PHP-FPM."
 fi

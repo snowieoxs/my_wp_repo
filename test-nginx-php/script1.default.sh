@@ -5,6 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Exit if the target configuration file does not exist
 if [ ! -f /etc/nginx/sites-available/default ]; then
+    echo "***********************************************************************************************************"
     echo "/etc/nginx/sites-available/default does not exist. Exiting..."
     exit 1
 fi
@@ -31,6 +32,7 @@ sudo nginx -t
 if [ $? -eq 0 ]; then
     sudo systemctl restart nginx
 else
+    echo "***********************************************************************************************************"
     echo "Nginx configuration test failed. Not restarting Nginx."
 fi
 
@@ -38,7 +40,9 @@ fi
 if [ -d "/var/www/html" ]; then
     echo "<?php phpinfo();" | sudo tee /var/www/html/info.php > /dev/null
     sudo chown $USER:$USER /var/www/html/info.php
+    echo "***********************************************************************************************************"
     echo "info.php has been created."
 else
+    echo "***********************************************************************************************************"
     echo "/var/www/html does not exist."
 fi

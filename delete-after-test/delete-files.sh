@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Function to check and delete a file
+# Function to check and delete a file or symbolic link
 check_and_delete() {
     local file_path=$1
-    if [ -f "$file_path" ]; then
+    if [ -e "$file_path" ]; then
         sudo rm "$file_path"
         echo "Deleted: $file_path"
     else

@@ -5,6 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Exit if the target configuration file does not exist
 if [ ! -f /etc/nginx/nginx.conf ]; then
+    echo "***********************************************************************************************************"
     echo "/etc/nginx/nginx.conf does not exist. Exiting..."
     exit 1
 fi
@@ -49,5 +50,6 @@ sudo nginx -t
 if [ $? -eq 0 ]; then
     sudo systemctl restart nginx
 else
+    echo "***********************************************************************************************************"
     echo "Nginx configuration test failed. Not restarting Nginx."
 fi
