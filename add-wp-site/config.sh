@@ -2,7 +2,7 @@
 # config.sh
 
 # Export variables
-export CNAME="ab" # This is CNAME name for the site, the prefix
+export CNAME="test" # This is CNAME name for the site, the prefix
 export DOMAIN="seeingspinningspheres" # This is the domain name for the site
 export TLD="xyz" # This is the top level domain for the site
 export TITLE="Seeing Spinning Spheres Corporation" # This
