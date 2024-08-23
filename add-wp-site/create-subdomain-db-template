@@ -1,0 +1,12 @@
+-- create-subdomain-db-template
+-- Create a database and user for the Globex application.
+CREATE DATABASE ${CNAME} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
+
+-- Create a user for the Globex application.
+CREATE USER '${CNAME}'@'localhost' IDENTIFIED BY '${DB_PASSWORD}';
+
+-- GRANT ALL PRIVILEGES ON globex.* TO 'globex'@'localhost';
+GRANT ALL PRIVILEGES ON ${CNAME}.* TO '${CNAME}'@'localhost';
+
+-- GRANT SELECT, INSERT, UPDATE, DELETE ON globex.* TO 'globex'@'localhost';
+FLUSH PRIVILEGES;

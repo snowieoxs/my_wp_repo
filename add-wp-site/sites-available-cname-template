@@ -1,0 +1,52 @@
+# sites-available-cname-template
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+
+    server_name ${SUB_DOMAIN};
+
+    ssl_certificate /etc/letsencrypt/live/${SUB_DOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${SUB_DOMAIN}/privkey.pem;
+
+    access_log /home/abe/${SUB_DOMAIN}/logs/access.log;
+    error_log /home/abe/${SUB_DOMAIN}/logs/error.log;
+
+    root /home/abe/${SUB_DOMAIN}/public/;
+    index index.php;
+
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi.conf;
+    }
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+
+    server_name ${WWW_SUB_DOMAIN};
+
+    ssl_certificate /etc/letsencrypt/live/${SUB_DOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${SUB_DOMAIN}/privkey.pem;
+
+    return 301 https://${SUB_DOMAIN}$request_uri;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name ${SUB_DOMAIN} ${WWW_SUB_DOMAIN};
+
+    return 301 https://${SUB_DOMAIN}$request_uri;
+}

@@ -33,6 +33,8 @@ sudo mv wp-cli.phar /usr/local/bin/wp
 # Test that it works
 echo
 echo "***********************************************************************************************************"
+echo
 echo "wp-cli.phar has been moved to /usr/local/bin/wp"
-ehco "Test that i works by typing 'wp'"
-
+echo
+echo "Test that i works by typing 'wp'"
+echo
