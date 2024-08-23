@@ -19,7 +19,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Obtain the SSL certificate
-sudo certbot --nginx -d $SUB_DOMAIN -d $WWW_SUB_DOMAIN
+sudo certbot --nginx -d "$SUB_DOMAIN" -d "$WWW_SUB_DOMAIN"
 if [ $? -ne 0 ]; then
     echo "Failed to obtain SSL certificate."
     exit 1
@@ -39,8 +39,8 @@ fi
 
 # When we went through the process to install Nginx you may remember we created a php.info file in the /var/www/html directory. This was because this is the default document root that Nginx configures. However, we want a more manageable directory structure for our WordPress sites.
 # Add server block so that NGINX can deal with request for the domain
-mkdir -p ~/$SUB_DOMAIN/logs ~/$SUB_DOMAIN/public
-chmod -R 755 ~/$SUB_DOMAIN
+mkdir -p ~/"$SUB_DOMAIN"/logs ~/"$SUB_DOMAIN"/public
+chmod -R 755 ~/"$SUB_DOMAIN"
 
 
 # Replace variables in the template file and save to a temporary file
@@ -59,7 +59,7 @@ fi
 rm "$SITES_AVAILABLE_CNAME_TEMPLATE"
 
 # Enable newly created site
-sudo ln -s /etc/nginx/sites-available/$SUB_DOMAIN /etc/nginx/sites-enabled/$SUB_DOMAIN
+sudo ln -s /etc/nginx/sites-available/"$SUB_DOMAIN" /etc/nginx/sites-enabled/"$SUB_DOMAIN"
 if [ $? -ne 0 ]; then
     echo "Failed to enable the new site."
     exit 1
