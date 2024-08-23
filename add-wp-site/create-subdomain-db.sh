@@ -32,7 +32,7 @@ fi
 # Go to your site's public directory
 cd ~/"$SUB_DOMAIN"/public
 if [ $? -ne 0 ]; then
-    echo "Failed to change directory to ~/$SUB_DOMAIN/public."
+    echo "Failed to change directory to ~/"$SUB_DOMAIN"/public."
     exit 1
 fi
 

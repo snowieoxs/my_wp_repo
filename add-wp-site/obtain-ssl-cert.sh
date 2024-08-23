@@ -19,7 +19,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Obtain the SSL certificate
-sudo certbot --nginx -d $SUB_DOMAIN -d $WWW_CNAME
+sudo certbot --nginx -d $SUB_DOMAIN -d $WWW_SUB_DOMAIN
 if [ $? -ne 0 ]; then
     echo "Failed to obtain SSL certificate."
     exit 1
