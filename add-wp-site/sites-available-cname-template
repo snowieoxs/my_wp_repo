@@ -10,10 +10,10 @@ server {
     ssl_certificate /etc/letsencrypt/live/${SUB_DOMAIN}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/${SUB_DOMAIN}/privkey.pem;
 
-    access_log /home/${USER}/${SUB_DOMAIN}/logs/access.log;
-    error_log /home/${USER}/${SUB_DOMAIN}/logs/error.log;
+    access_log /home/${USERNAME}/${SUB_DOMAIN}/logs/access.log;
+    error_log /home/${USERNAME}/${SUB_DOMAIN}/logs/error.log;
 
-    root /home/${USER}/${SUB_DOMAIN}/public/;
+    root /home/${USERNAME}/${SUB_DOMAIN}/public/;
     index index.php;
 
     location / {
