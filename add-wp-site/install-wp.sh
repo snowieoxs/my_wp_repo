@@ -3,51 +3,49 @@
 
 # Get the directory of the script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/config.sh"
 
-# Load sensitive information from .env file
-if [ -f "$SCRIPT_DIR/.env" ]; then
-    export $(grep -v '^#' "$SCRIPT_DIR/.env" | xargs)
-    if [ $? -ne 0 ]; then
-        echo "Failed to export variables from .env file."
-        exit 1
-    fi
-else
-    echo ".env file not found in $SCRIPT_DIR"
-    echo "Please create one and add 'DB_PASSWORD=your_secure_password'"
+# Function to handle errors
+handle_error() {
+    echo "***********************************************************************************************************"
+    echo "Error on line $2: $1"
     exit 1
+}
+
+# Load environment variables from the .env file
+ENV_FILE="$SCRIPT_DIR/.env"
+
+if [ -f "$ENV_FILE" ]; then
+    # Export all variables from the .env file
+    set -o allexport
+    source "$ENV_FILE" || handle_error "Failed to source .env file." $LINENO
+    set +o allexport
+else
+    handle_error ".env file not found in $SCRIPT_DIR" $LINENO
 fi
 
-# Source the non-sensitive configuration
-if [ -f "$SCRIPT_DIR/config.sh" ]; then
-    source "$SCRIPT_DIR/config.sh"
-    if [ $? -ne 0 ]; then
-        echo "Failed to source config.sh."
-        exit 1
-    fi
-else
-    echo "config.sh file not found in $SCRIPT_DIR"
-    exit 1
+# Check if DB_PASSWORD is set and not empty
+if [ -z "$DB_PASSWORD" ]; then
+    handle_error "DB_PASSWORD is not set in the .env file. Please edit $ENV_FILE and set DB_PASSWORD=your_secure_password" $LINENO
+fi
+
+# Check if WP_PASSWORD is set and not empty
+if [ -z "$WP_PASSWORD" ]; then
+    handle_error "WP_PASSWORD is not set in the .env file. Please edit $ENV_FILE and set DB_PASSWORD=your_secure_password" $LINENO
 fi
 
 # Go to your site's public directory
-cd ~/$SUB_DOMAIN/public
-if [ $? -ne 0 ]; then
-    echo "Failed to change directory to ~/"$SUB_DOMAIN"/public."
-    exit 1
-fi
+cd ~/$SUB_DOMAIN/public || handle_error "Failed to change directory to ~/$SUB_DOMAIN/public." $LINENO
 
 # Download the latest version of WordPress
-wp core download
-if [ $? -ne 0 ]; then
-    echo "Failed to download WordPress."
-    exit 1
-fi
+wp core download || handle_error "Failed to download WordPress." $LINENO
 
 # Create wp-config.php file
-wp core config --dbname="$CNAME" --dbuser="$CNAME" --dbpass="$DB_PASSWORD"
-if [ $? -ne 0 ]; then
-    echo "Failed to create wp-config.php file."
-    exit 1
-fi
+wp core config --dbname="$CNAME" --dbuser="$CNAME" --dbpass="$DB_PASSWORD" || handle_error "Failed to create wp-config.php file." $LINENO
 
-echo "WordPress setup completed successfully."
+# with wp-config.php created, we can now install WordPress
+wp core install --skip-email --url="$URL" --title="$TITLE" --admin_user="$USERNAME" --admin_password="$WP_PASSWORD" --admin_email="$WP_EMAIL" || handle_error "Failed to install WordPress." $LINENO
+
+echo "***********************************************************************************************************"
+echo "you shoudld see the message 'Success: WordPress installed successfully.' Script if finished."
+
