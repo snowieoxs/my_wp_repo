@@ -25,8 +25,8 @@ else
 fi
 
 # Check if DB_PASSWORD is set and not empty
-if [ -z "$DB_PASSWORD" ]; then
-    handle_error "DB_PASSWORD is not set in the .env file. Please edit $ENV_FILE and set DB_PASSWORD=your_secure_password" $LINENO
+if [ -z "$MYSQL_CNAME_PASSWORD" ]; then
+    handle_error "MYSQL_CNAME_PASSWORD is not set in the .env file. Please edit $ENV_FILE and set ANOTHER_VAR=your_value" $LINENO
 fi
 
 # Check if WP_PASSWORD is set and not empty
@@ -41,7 +41,7 @@ cd ~/$SUB_DOMAIN/public || handle_error "Failed to change directory to ~/$SUB_DO
 wp core download || handle_error "Failed to download WordPress." $LINENO
 
 # Create wp-config.php file
-wp core config --dbname="$CNAME" --dbuser="$CNAME" --dbpass="$DB_PASSWORD" || handle_error "Failed to create wp-config.php file." $LINENO
+wp core config --dbname="$CNAME" --dbuser="$CNAME" --dbpass="$MYSQL_CNAME_PASSWORD" || handle_error "Failed to create wp-config.php file." $LINENO
 
 # with wp-config.php created, we can now install WordPress
 wp core install --skip-email --url="$URL" --title="$TITLE" --admin_user="$USERNAME" --admin_password="$WP_PASSWORD" --admin_email="$WP_EMAIL" || handle_error "Failed to install WordPress." $LINENO

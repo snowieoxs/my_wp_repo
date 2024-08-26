@@ -22,7 +22,7 @@ set +o allexport
 
 # Check if DB_PASSWORD and ANOTHER_VAR are set and not empty
 if [ -z "$MYSQL_ROOT_PASSWORD" ]; then
-    handle_error "DB_PASSWORD is not set in the .env file. Please edit $ENV_FILE and set DB_PASSWORD=your_secure_password" $LINENO
+    handle_error "MYSQL_ROOT_PASSWORD is not set in the .env file. Please edit $ENV_FILE and set DB_PASSWORD=your_secure_password" $LINENO
 fi
 
 if [ -z "$MYSQL_CNAME_PASSWORD" ]; then
