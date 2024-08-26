@@ -8,7 +8,7 @@ source "$SCRIPT_DIR/config.sh"
 # Function to handle errors
 handle_error() {
     echo "***********************************************************************************************************"
-    echo "Error on line $2: $1"
+    echo "obtain-ssl-cert.sh Error on line $2: $1"
     exit 1
 }
 
@@ -27,11 +27,14 @@ sudo certbot --nginx -d "$SUB_DOMAIN" -d "$WWW_SUB_DOMAIN" || handle_error "Fail
 sudo certbot renew --dry-run || handle_error "Failed to test automatic renewal process." $LINENO
 
 # If the certbot renewal test passes, execute make-sites-available.sh
-MAKE_SITE_AVAILABLE_SCRIPT="$SCRIPT_DIR/make-site-available.sh"
+# MAKE_SITE_AVAILABLE_SCRIPT="$SCRIPT_DIR/make-site-available.sh"
 
-if [ -f "$MAKE_SITE_AVAILABLE_SCRIPT" ]; then
-    chmod +x "$MAKE_SITE_AVAILABLE_SCRIPT"
-    "$MAKE_SITE_AVAILABLE_SCRIPT" || handle_error "make-sites-available.sh script failed." $LINENO
-else
-    handle_error "make-sites-available.sh script not found." $LINENO
-fi
+# if [ -f "$MAKE_SITE_AVAILABLE_SCRIPT" ]; then
+#     chmod +x "$MAKE_SITE_AVAILABLE_SCRIPT"
+#     "$MAKE_SITE_AVAILABLE_SCRIPT" || handle_error "make-sites-available.sh script failed." $LINENO
+# else
+#     handle_error "make-sites-available.sh script not found." $LINENO
+# fi
+
+chmod +x "$SCRIPT_DIR/make-site-available.sh"
+echo "obtain-ssl-cert.sh completed successfully."

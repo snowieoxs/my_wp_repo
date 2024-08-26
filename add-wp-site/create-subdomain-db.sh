@@ -7,7 +7,7 @@ source "$SCRIPT_DIR/config.sh"
 # Function to handle errors
 handle_error() {
     echo "***********************************************************************************************************"
-    echo "Error on line $2: $1"
+    echo "create-subdomain-db.sh Error on line $2: $1"
     exit 1
 }
 
@@ -34,22 +34,24 @@ mysql -u root -p "$MYSQL_ROOT_PASSWORD" <<EOF
 CREATE DATABASE IF NOT EXISTS $CNAME CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 CREATE USER '$CNAME'@'localhost' IDENTIFIED BY '$MYSQL_CNAME_PASSWORD';
 GRANT ALL PRIVILEGES ON $CNAME.* TO '$CNAME'@'localhost';
-# GRANT SELECT, INSERT, UPDATE, DELETE ON globex.* TO 'globex'@'localhost';
+# GRANT SELECT, INSERT, UPDATE, DELETE ON $CNAME.* TO '$CNAME'@'localhost';
 FLUSH PRIVILEGES;
 EOF
 
+
+chmod +x "$SCRIPT_DIR/install-wp.sh"
 # Function to execute the create-subdomain-db script
-run_install_wp() {
-    local install_wp_script="$SCRIPT_DIR/install-wp.sh"
+# run_install_wp() {
+#     local install_wp_script="$SCRIPT_DIR/install-wp.sh"
 
-    if [ ! -f "$install_wp_script" ]; then
-        handle_error "install-wp.sh script not found." $LINENO
-    fi
+#     if [ ! -f "$install_wp_script" ]; then
+#         handle_error "install-wp.sh script not found." $LINENO
+#     fi
 
-    chmod +x "$install_wp_script"
-    "$install_wp_script" || handle_error "install-wp.sh script failed." $LINENO
-}
+#     chmod +x "$install_wp_script"
+#     "$install_wp_script" || handle_error "install-wp.sh script failed." $LINENO
+# }
 
-run_install_wp
-
-echo "Subdomain database created successfully."
+# run_install_wp
+chmod +x install-wp.sh
+echo "create-subdomain-db.sh ran successfully."

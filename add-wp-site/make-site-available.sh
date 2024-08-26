@@ -8,7 +8,7 @@ source "$SCRIPT_DIR/config.sh"
 # Function to handle errors
 handle_error() {
     echo "***********************************************************************************************************"
-    echo "Error on line $2: $1"
+    echo "make-site-available.sh Error on line $2: $1"
     exit 1
 }
 
@@ -48,21 +48,22 @@ reload_nginx() {
 }
 
 # Function to execute the create-subdomain-db script
-run_create_db_script() {
-    local db_script="$SCRIPT_DIR/create-subdomain-db.sh"
+# run_create_db_script() {
+#     local db_script="$SCRIPT_DIR/create-subdomain-db.sh"
 
-    if [ -f "$db_script" ]; then
-        chmod +x "$db_script"
-        "$db_script" || handle_error "create-subdomain-db.sh script failed." $LINENO
-    else
-        handle_error "create-subdomain-db.sh script not found." $LINENO
-    fi
-}
+#     if [ -f "$db_script" ]; then
+#         chmod +x "$db_script"
+#         "$db_script" || handle_error "create-subdomain-db.sh script failed." $LINENO
+#     else
+#         handle_error "create-subdomain-db.sh script not found." $LINENO
+#     fi
+# }
 
 # Main script execution
 setup_directories
 configure_site_available
 reload_nginx
-run_create_db_script
+# run_create_db_script
 
-echo "Nginx configuration and database setup completed successfully."
+chmod +x "$SCRIPT_DIR/create-subdomain-db.sh"
+echo "make-site-available.sh completed successfully."
