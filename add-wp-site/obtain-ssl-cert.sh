@@ -21,7 +21,7 @@ sudo apt update || handle_error "Failed to update package list." $LINENO
 sudo apt install certbot python3-certbot-nginx || handle_error "Failed to install certbot and dependencies." $LINENO
 
 # Obtain the SSL certificate
-sudo certbot --nginx -d "$SUB_DOMAIN" -d "$WWW_SUB_DOMAIN" || handle_error "Failed to obtain SSL certificate." $LINENO
+sudo certbot --nginx certonly -d "$SUB_DOMAIN" -d "$WWW_SUB_DOMAIN" || handle_error "Failed to obtain SSL certificate." $LINENO
 
 # Test automatic renewal process
 sudo certbot renew --dry-run || handle_error "Failed to test automatic renewal process." $LINENO
