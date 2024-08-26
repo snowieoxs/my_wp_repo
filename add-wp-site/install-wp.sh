@@ -8,7 +8,7 @@ source "$SCRIPT_DIR/config.sh"
 # Function to handle errors
 handle_error() {
     echo "***********************************************************************************************************"
-    echo "Error on line $2: $1"
+    echo "install-wp.sh Error on line $2: $1"
     exit 1
 }
 
