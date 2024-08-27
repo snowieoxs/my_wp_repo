@@ -67,8 +67,9 @@ configure_sites_available_template() {
 
 
     # Insert the server block and cache settings using awk
-    awk -v cache_exclusions="$CACHE_EXCLUSIONS" '
+    awk -v cache_exclusions="$CACHE_EXCLUSIONS" -v page_cache_php_fpm="$PAGE_CACHE_PHP_FPM" '
     /# CACHE_EXCLUSIONS_PLACEHOLDER/ {print cache_exclusions; next}
+    /# PAGE_CACHE_PHP_FPM_PLACEHOLDER/ {print page_cache_php_fpm; next}
     {print}
     ' "$temp_file" | sudo tee /etc/nginx/sites-available/"$SUB_DOMAIN" > /dev/null || handle_error "Failed to write sites available configuration." $LINENO
     
