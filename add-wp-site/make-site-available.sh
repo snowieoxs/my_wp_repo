@@ -23,7 +23,7 @@ replace_placeholders() {
     sed -e "s|{{SUB_DOMAIN}}|$SUB_DOMAIN|g" \
         -e "s|{{WWW_SUB_DOMAIN}}|$WWW_SUB_DOMAIN|g" \
         -e "s|{{USERNAME}}|$USERNAME|g" \
-        "$SCRIPT_DIR/sites-available-template"
+        "$SCRIPT_DIR/sites-available-template.conf"
 }
 
 configure_site_available () {
