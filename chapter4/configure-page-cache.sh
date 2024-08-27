@@ -41,6 +41,17 @@ CACHE_EXCLUSIONS=$(cat <<'EOF'
 EOF
 )
 
+PAGE_CACHE_PHP_FPM=$(cat <<'EOF'
+        fastcgi_cache {{SUB_DOMAIN}};
+        fastcgi_cache_bypass $skip_cache;
+        fastcgi_no_cache $skip_cache;
+        fastcgi_cache_valid 60m; # This can be changed, they talk about it in the documentation
+EOF
+)
+
+# Replace the placeholder in PAGE_CACHE_PHP_FPM
+PAGE_CACHE_PHP_FPM=$(echo "$PAGE_CACHE_PHP_FPM" | sed "s|{{SUB_DOMAIN}}|$SUB_DOMAIN|g")
+
 # Function to configure the Nginx template
 configure_sites_available_template() {
     local temp_file
