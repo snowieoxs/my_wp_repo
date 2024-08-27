@@ -41,6 +41,17 @@ CACHE_EXCLUSIONS=$(cat <<'EOF'
 EOF
 )
 
+PAGE_CACHE_PHP_FPM=$(cat <<'EOF'
+        fastcgi_cache {{SUB_DOMAIN}};
+        fastcgi_cache_bypass $skip_cache;
+        fastcgi_no_cache $skip_cache;
+        fastcgi_cache_valid 60m; # This can be changed, they talk about it in the documentation
+EOF
+)
+
+# Replace the placeholder in PAGE_CACHE_PHP_FPM
+PAGE_CACHE_PHP_FPM=$(echo "$PAGE_CACHE_PHP_FPM" | sed "s|{{SUB_DOMAIN}}|$SUB_DOMAIN|g")
+
 WOO_COMMERCE_CACHE_EXCLUSIONS=$(cat <<'EOF'
     # Don’t use cache for WooCommerce pages
     if ($request_uri ~* "/(cart|checkout|my-account)/*$") {
@@ -69,8 +80,9 @@ configure_sites_available_template() {
 
 
     # Insert the server block and cache settings using awk
-    awk -v cache_exclusions="$CACHE_EXCLUSIONS" -v woo_commerce_cache_exclusions="$WOO_COMMERCE_CACHE_EXCLUSIONS" '
+    awk -v cache_exclusions="$CACHE_EXCLUSIONS" -v woo_commerce_cache_exclusions="$WOO_COMMERCE_CACHE_EXCLUSIONS" -v page_cache_php_fpm="$PAGE_CACHE_PHP_FPM" '
     /# CACHE_EXCLUSIONS_PLACEHOLDER/ {print cache_exclusions; next}
+    /# PAGE_CACHE_PHP_FPM_PLACEHOLDER/ {print page_cache_php_fpm; next}
     /# WOO_COMMERCE_CACHE_EXCLUSIONS_PLACEHOLDER/ {print woo_commerce_cache_exclusions; next}
     {print}
     ' "$temp_file" | sudo tee /etc/nginx/sites-available/"$SUB_DOMAIN" > /dev/null || handle_error "Failed to write sites available configuration." $LINENO

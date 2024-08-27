@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Notice how the fastcgi_cache directive matches the keys_zone set before the server block. In addition to changing the cache location, you can also specify the cache duration by replacing 60m with the desired duration in minutes. The default of 60 minutes is a good starting point for most people.
+
+# If you modify the cache duration, you should consider updating the inactive parameter in the fastcgi_cache_path line as well. The inactive parameter specifies the length of time cached data is allowed to live in the cache without being accessed before it is removed.
+
 # Get the directory of the script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Get the name of the script file
