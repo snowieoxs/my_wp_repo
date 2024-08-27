@@ -41,7 +41,7 @@ configure_chapter4_nginx_template() {
     temp_file=$(mktemp)
 
     # Copy the contents of the template file to the temporary file
-    cp "$SCRIPT_DIR/chapter4-nginx.conf" "$temp_file"
+    cp "$SCRIPT_DIR/nginx-template.conf" "$temp_file"
 
     # Replace placeholders in the temporary file using sed
     sed -i -e "s|{{NGINX_USER}}|$NGINX_USER|g" \
