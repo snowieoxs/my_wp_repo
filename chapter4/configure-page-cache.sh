@@ -77,7 +77,7 @@ configure_sites_available_template() {
     rm "$temp_file"
 }
 
-Function to test and reload Nginx
+# Function to test and reload Nginx
 reload_nginx() {
     sudo nginx -t || handle_error "Nginx configuration test failed. Not restarting Nginx." $LINENO
     sudo systemctl restart nginx || handle_error "Failed to restart Nginx." $LINENO
